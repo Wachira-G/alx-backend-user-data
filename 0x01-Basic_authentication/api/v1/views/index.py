@@ -38,5 +38,4 @@ def unauthorised() -> str:
 def forbidden() -> str:
     """403 test route.
     """
-    return jsonify({"error": "Forbidden"}), 403
-    # abort(403)
+    abort(403)
