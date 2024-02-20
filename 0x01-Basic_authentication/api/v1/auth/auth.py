@@ -18,9 +18,18 @@ class Auth:
         if (
             excluded_paths is None
             or path is None
-            or path not in excluded_paths
             or len(excluded_paths) == 0
         ):
+            return True
+        asterick_paths = [
+                path for path in excluded_paths if path.endswith('*')
+        ]
+        if asterick_paths:
+            # check if path match any of the asterick paths
+            for ast_path in asterick_paths:
+                if ast_path[:-1] in path[:-1]:
+                    return False
+        if path not in excluded_paths:
             return True
         return False
 
