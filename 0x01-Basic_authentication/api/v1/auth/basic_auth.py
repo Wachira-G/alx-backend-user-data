@@ -64,8 +64,13 @@ class BasicAuth(Auth):
             or ":" not in decoded_base64_authorization_header
         ):
             return None, None
-        splitted_string_list = decoded_base64_authorization_header.split(":")
-        return splitted_string_list[0], splitted_string_list[1]
+        splitted_string_list = decoded_base64_authorization_header.split(
+                ":",
+                maxsplit=1
+        )
+        email = splitted_string_list[0]
+        password = splitted_string_list[1]
+        return email, password
 
     def user_object_from_credentials(
         self, user_email: str, user_pwd: str
