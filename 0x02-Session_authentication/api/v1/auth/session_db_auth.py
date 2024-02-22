@@ -21,13 +21,18 @@ class SessionDBAuth(SessionExpAuth):
             return None
         return session_id
 
+    def user_id_for_session_id(self, session_id=None):
+        """Returns the User ID by requesting UserSession in the database
+        based on session_id."""
+        return super().user_id_for_session_id(session_id)
+
     def destroy_session(self, request=None):
         """Destroy the UserSession based on Session ID from request cookie."""
-        cookie = session_cookie(request)
+        cookie = self.session_cookie(request)
         if cookie:
             user_id = self.user_id_for_session_id(cookie)
             session_id = cookie
-            user_session = UserSession.get(sessiono_id)
+            user_session = UserSession.get(session_id)
             if not user_session:
                 return False
             del user_session
