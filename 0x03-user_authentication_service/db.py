@@ -7,6 +7,16 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
 
+try:
+    from sqlalchemy.orm.exc import NoResultFound, InvalidRequestError
+except Exception:
+    pass
+
+try:
+    from sqlalchemy.exc import InvalidRequestError, NoResultFound
+except Exception:
+    pass
+
 from user import Base, User
 
 
@@ -37,3 +47,17 @@ class DB:
         self._session.add(user_instance)
         self._session.commit()
         return user_instance
+
+    def find_user_by(self, **kwargs: dict) -> User:
+        """Returns the first row found in user table as filterd by kwargs."""
+        try:
+            row = self._session.query(User).filter_by(**kwargs).first()
+            if row is None:
+                raise NoResultFound
+            return row
+        except InvalidRequestError as invalid_request_error:
+            # Handle InvalidRequestError
+            raise invalid_request_error
+        except NoResultFound as no_result_found:
+            # Handle NoResultFound
+            raise no_result_found
