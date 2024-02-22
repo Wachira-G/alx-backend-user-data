@@ -51,7 +51,7 @@ class DB:
     def find_user_by(self, **kwargs: dict) -> User:
         """Returns the first row found in user table as filterd by kwargs."""
         try:
-            row = self._session.query(User).filter_by(**kwargs).first()
+            row = self._session.query(User).filter_by(**kwargs).one()
             if row is None:
                 raise NoResultFound
             return row
