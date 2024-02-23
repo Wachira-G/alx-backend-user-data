@@ -18,8 +18,15 @@ except Exception:
     pass
 
 from typing import TypeVar
-
 from user import Base, User
+
+VALID_ATTRIBUTES = [
+        'id',
+        'email',
+        'hashed_password',
+        'session_id',
+        'reset_token'
+]
 
 
 class DB:
@@ -82,4 +89,6 @@ class DB:
         if not kwargs:
             raise InvalidRequestError
         for key, value in kwargs.items():
-            setattr(self, key, value)
+            if key in VALID_ATTRIBUTES:
+                setattr(self, key, value)
+            raise InvalidRequestError
