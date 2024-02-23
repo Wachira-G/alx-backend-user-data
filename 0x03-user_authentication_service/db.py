@@ -20,12 +20,7 @@ except Exception:
 from typing import TypeVar
 from user import Base, User
 
-VALID_ATTRIBUTES = [
-        'id',
-        'email',
-        'hashed_password',
-        'session_id',
-        'reset_token'
+VALID_ATTRIBUTES = ['id','email','hashed_password','session_id','reset_token'
 ]
 
 
@@ -89,6 +84,8 @@ class DB:
         if not kwargs:
             raise InvalidRequestError
         for key, value in kwargs.items():
-            if key in VALID_ATTRIBUTES:
-                setattr(self, key, value)
-            raise InvalidRequestError
+            if key not in VALID_ATTRIBUTES:
+                raise ValueError
+            setattr(user, key, value)
+            self._session.commit()
+
