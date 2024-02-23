@@ -53,7 +53,7 @@ class DB:
         self._session.commit()
         return user_instance
 
-    def find_user_by(self, **kwargs) -> TypeVar("User"):
+    def find_user_by(self, **kwargs: dict) -> TypeVar("User"):
         """
         Returns the first row found in user table as filtered by kwargs.
 
