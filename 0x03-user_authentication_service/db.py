@@ -17,6 +17,8 @@ try:
 except Exception:
     pass
 
+from typing import TypeVar
+
 from user import Base, User
 
 
@@ -41,7 +43,7 @@ class DB:
             self.__session = DBSession()
         return self.__session
 
-    def add_user(self, email: str, hashed_password: str) -> TypeVar('User'):
+    def add_user(self, email: str, hashed_password: str) -> User:
         """Save a user to the database."""
         user_instance = User(email=email, hashed_password=hashed_password)
         self._session.add(user_instance)
