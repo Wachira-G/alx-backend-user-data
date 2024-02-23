@@ -51,7 +51,16 @@ class DB:
         return user_instance
 
     def find_user_by(self, **kwargs: dict) -> TypeVar('User'):
-        """Returns the first row found in user table as filterd by kwargs."""
+        """
+        Returns the first row found in user table as filtered by kwargs.
+
+        Args:
+        **kwargs (dict): Key-value pairs to filter the query
+
+        Returns:
+        User: The first row found in the user table
+        matching the filter criteria
+        """
         try:
             row = self._session.query(User).filter_by(**kwargs).one()
             if row is None:
@@ -64,11 +73,13 @@ class DB:
             # Handle NoResultFound
             raise no_result_found
 
-    def update_user(self, user_id: int, **kwargs: dict) -> None:
+    def update_user(self, user_id: int, **kwargs: dict):
         """Locates user to update, then update user's attributes
         and commit changes to database."""
         user = self.find_user_by(id=user_id)
         if not user:
             raise NoResultFound
+        if not kwargs:
+            raise InvalidRequestError
         for key, value in kwargs.items():
             setattr(self, key, value)
