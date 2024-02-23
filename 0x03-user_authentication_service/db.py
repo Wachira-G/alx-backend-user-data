@@ -41,14 +41,14 @@ class DB:
             self.__session = DBSession()
         return self.__session
 
-    def add_user(self, email: str, hashed_password: str) -> User:
+    def add_user(self, email: str, hashed_password: str) -> TypeVar('User'):
         """Save a user to the database."""
         user_instance = User(email=email, hashed_password=hashed_password)
         self._session.add(user_instance)
         self._session.commit()
         return user_instance
 
-    def find_user_by(self, **kwargs: dict) -> User:
+    def find_user_by(self, **kwargs: dict) -> TypeVar('User'):
         """Returns the first row found in user table as filterd by kwargs."""
         try:
             row = self._session.query(User).filter_by(**kwargs).one()
