@@ -20,7 +20,8 @@ except Exception:
 from typing import TypeVar
 from user import Base, User
 
-VALID_ATTRIBUTES = ['id','email','hashed_password','session_id','reset_token'
+VALID_ATTRIBUTES = [
+        "id", "email", "hashed_password", "session_id", "reset_token"
 ]
 
 
@@ -52,7 +53,7 @@ class DB:
         self._session.commit()
         return user_instance
 
-    def find_user_by(self, **kwargs: dict) -> TypeVar('User'):
+    def find_user_by(self, **kwargs: dict) -> TypeVar("User"):
         """
         Returns the first row found in user table as filtered by kwargs.
 
@@ -88,4 +89,3 @@ class DB:
                 raise ValueError
             setattr(user, key, value)
             self._session.commit()
-

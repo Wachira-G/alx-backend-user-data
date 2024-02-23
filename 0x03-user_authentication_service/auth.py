@@ -11,9 +11,9 @@ from user import User
 
 def _hash_password(password: str) -> bytes:
     """hash a password."""
-    password = "my_password".encode("utf-8")
+    binary_password = password.encode("utf-8")
     salt = bcrypt.gensalt()
-    hashed_password = bcrypt.hashpw(password, salt)
+    hashed_password = bcrypt.hashpw(binary_password, salt)
     return hashed_password
 
 
