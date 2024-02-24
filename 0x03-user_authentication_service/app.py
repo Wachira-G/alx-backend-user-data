@@ -54,16 +54,16 @@ def login() -> str:
 def logout() -> str:
     """logouts out a session."""
     if not request.cookies:
-        abort(401)
+        abort(403)
     session_id = request.cookies.get('session_id')
     if not session_id:
-        abort(401)
+        abort(403)
     try:
         user = AUTH.get_user_from_session_id(session_id)
         if user:
             AUTH.destroy_session(user.id)
             # redirect to get /
-            return redirect('/')
+            return redirect('/', code=302)
         abort(403)
     except NoResultFound:
         abort(403)
