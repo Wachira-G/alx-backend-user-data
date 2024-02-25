@@ -45,6 +45,8 @@ def login() -> str:
     session_uuid = AUTH.create_session(email=email)
     if session_uuid:
         out = jsonify({"email": email, "message": "logged in"})
+        out.set_cookie('session_id', session_uuid)
+        return out, 200
     abort(401)
 
 
