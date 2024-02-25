@@ -89,3 +89,15 @@ class Auth:
         except NoResultFound as err:
             print(err)
             return None
+
+    def get_reset_password_token(self, email: str) -> str:
+        """Takes an email as argument and returns a a reset token str."""
+        if not email:
+            raise ValueError
+        try:
+            user = self._db.find_user_by(email=email)
+            reset_token = str(uuid.uuid4())
+            self._db.update_user(user.id, reset_token=reset_token)
+            return reset_token
+        except NoResultFound as err:
+            raise ValueError
