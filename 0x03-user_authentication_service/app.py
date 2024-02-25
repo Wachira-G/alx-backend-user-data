@@ -89,6 +89,7 @@ def profile() -> str:
 
 @app.route('/reset_password', methods=['POST'], strict_slashes=False)
 def reset_password() -> str:
+    """Generate a reset token to reset a password."""
     email = request.form.get('email')
     if not email:
         abort(403)
@@ -99,7 +100,7 @@ def reset_password() -> str:
         abort(403)
 
 
-@app.route('/reset_password', methods=['PUT'], strict_slashess=False)
+@app.route('/reset_password', methods=['PUT'], strict_slashes=False)
 def update_password() -> str:
     """Updates password after reseting."""
     if not request.form:
