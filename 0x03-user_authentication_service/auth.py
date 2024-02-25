@@ -104,7 +104,7 @@ class Auth:
 
     def update_password(self, reset_token: str, password: str):
         """updates a users password after reset."""
-        if not token or not password:
+        if not reset_token or not password:
             raise ValueError
         try:
             user = self._db.find_user_by(reset_token=reset_token)
