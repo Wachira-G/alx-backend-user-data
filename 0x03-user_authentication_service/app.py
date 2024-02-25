@@ -2,6 +2,7 @@
 
 """Flask app module."""
 from flask import Flask, jsonify, request, abort, redirect
+from sqlalchemy.orm.exc import NoResultFound
 from auth import Auth
 
 
@@ -64,6 +65,23 @@ def logout() -> str:
             AUTH.destroy_session(user.id)
             # redirect to get /
             return redirect('/', code=302)
+        abort(403)
+    except NoResultFound:
+        abort(403)
+
+
+@app.route('/profile', methods=['GET'], strict_slashes=False)
+def profile() -> str:
+    """finda a user from the session id cookie and respond with their email."""
+    if not request.cookies:
+        abort(403)
+    session_id = request.cookies.get('session_id')
+    if not session_id:
+        abort(403)
+    try:
+        user = AUTH.get_user_from_session_id(session_id)
+        if user:
+            return jsonify({"email": user.email}), 200
         abort(403)
     except NoResultFound:
         abort(403)
